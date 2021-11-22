@@ -6,29 +6,24 @@ from ctypes import cast, POINTER
 from comtypes import CLSCTX_ALL
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 
-#lösung API mediapipe
 mp_cizim = mp.solutions.drawing_utils
 mp_cizim_sekilleri = mp.solutions.drawing_styles
 mp_el = mp.solutions.hands
 
-#Lautstärke regeler bibiliothek nutzen pycaw
 cihazlar = AudioUtilities.GetSpeakers()
 arayüz = cihazlar.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
 ses = cast(arayüz, POINTER(IAudioEndpointVolume))
 
-#ses ayarlama volume.getvolumerange() methode
 menzil = ses.GetVolumeRange()
 minVol, maxVol, volBar, volPer = menzil[0], menzil[1], 400, 0
 
-#kamera opencv
 gKamera, yKamera = 640, 480 #g = genislik , y = yükseklik
 kamera = cv2.VideoCapture(0)
 kamera.set(3, gKamera)
 kamera.set(4, yKamera)
  
 
-#el tanima
-with mp_el.Hands(model_complexity = 0, min_detection_confidence=0.5, min_tracking_confidence=0.5) as hands:
+ with mp_el.Hands(model_complexity = 0, min_detection_confidence=0.5, min_tracking_confidence=0.5) as hands:
  
     while (True):
 
